@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Happy Birthday ❤️</title>
 
@@ -14,32 +14,29 @@
   font-family:'Segoe UI',cursive;
 }
 
+/* ✅ FIX: no flex centering */
 body{
-  background:#000;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
+  background:black;
   overflow:hidden;
 }
 
-/* 9:16 phone frame */
+/* ✅ app fills from TOP */
 .app{
   width:100%;
   max-width:420px;
-  aspect-ratio:9/16;
+  height:100dvh;   /* modern mobile height fix */
+  margin:auto;
   position:relative;
   overflow:hidden;
-  border-radius:25px;
-  box-shadow:0 0 25px rgba(0,0,0,.5);
 }
 
-/* ===== pages ===== */
+/* pages */
 .page{
   position:absolute;
   width:100%;
   height:100%;
   left:100%;
+  top:0;
   display:flex;
   flex-direction:column;
   justify-content:center;
@@ -54,12 +51,6 @@ body{
 
 .page.active{ left:0; }
 
-@keyframes gradient{
-  0%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 50%}
-}
-
 /* gradients */
 .g1{background:linear-gradient(45deg,#ff9a9e,#fad0c4);}
 .g2{background:linear-gradient(45deg,#a18cd1,#fbc2eb);}
@@ -67,42 +58,30 @@ body{
 .g4{background:linear-gradient(45deg,#89f7fe,#66a6ff);}
 .g5{background:linear-gradient(45deg,#fddb92,#fbc2eb);}
 
+@keyframes gradient{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
 /* text */
-h1{
-  font-size:2.2rem;
-  margin-bottom:15px;
-  animation:fadeUp 1s ease;
-}
+h1{font-size:2.2rem;margin-bottom:15px;}
+p{font-size:1.1rem;margin-bottom:25px;}
 
-p{
-  font-size:1.1rem;
-  margin-bottom:25px;
-}
-
-@keyframes fadeUp{
-  from{opacity:0;transform:translateY(20px)}
-  to{opacity:1}
-}
-
-/* button */
 button{
   padding:12px 28px;
   border:none;
   border-radius:25px;
-  font-weight:bold;
   background:white;
   color:#ff4d88;
-  cursor:pointer;
-  z-index:5;
+  font-weight:bold;
 }
 
-/* ===== LIGHT HEARTS ===== */
+/* hearts */
 .heart{
   position:absolute;
-  font-size:18px;
-  opacity:.9;
+  pointer-events:none;
   animation:float 6s linear forwards;
-  pointer-events:none; /* IMPORTANT FIX */
 }
 
 @keyframes float{
@@ -111,11 +90,9 @@ button{
   to{transform:translateY(-20%);opacity:0}
 }
 
-/* ===== cake ===== */
-.cake{margin-top:20px}
+/* cake */
 .layer{width:170px;height:40px;background:#ff9ecb;margin:6px auto;border-radius:10px}
 .candle{width:10px;height:40px;background:white;margin:auto;position:relative}
-
 .flame{
   width:14px;height:18px;background:orange;border-radius:50%;
   position:absolute;top:-18px;left:-2px;
@@ -124,8 +101,7 @@ button{
 @keyframes flicker{from{transform:scale(1)}to{transform:scale(1.25)}}
 
 .confetti{
-  position:absolute;
-  width:6px;height:6px;
+  position:absolute;width:6px;height:6px;
   animation:fall 2.5s linear forwards;
 }
 @keyframes fall{
@@ -138,7 +114,6 @@ button{
 
 <div class="app">
 
-<!-- 4 cute pages -->
 <div class="page g1 active">
 <h1>Happy Birthday ❤️</h1>
 <p>You make my world brighter every day.</p>
@@ -163,17 +138,12 @@ button{
 <button onclick="next()">Next ➜</button>
 </div>
 
-<!-- last page -->
 <div class="page g5" id="lastPage">
 <h1>Make a Wish 🎂</h1>
-
-<div class="cake">
-  <div class="candle"><div class="flame" id="flame"></div></div>
-  <div class="layer"></div>
-  <div class="layer"></div>
-  <div class="layer"></div>
-</div>
-
+<div class="candle"><div class="flame" id="flame"></div></div>
+<div class="layer"></div>
+<div class="layer"></div>
+<div class="layer"></div>
 <p>Tap cake to blow candle 💨</p>
 <h2 id="wish"></h2>
 </div>
@@ -184,17 +154,16 @@ button{
 let current=0;
 const pages=document.querySelectorAll(".page");
 
-/* next page */
+/* next */
 function next(){
   pages[current].classList.remove("active");
   current++;
   pages[current].classList.add("active");
 }
 
-/* LIGHT hearts only pages 1-4 */
+/* light hearts */
 setInterval(()=>{
   if(current===4) return;
-
   const h=document.createElement("div");
   h.className="heart";
   h.innerHTML="❤";
@@ -204,28 +173,10 @@ setInterval(()=>{
 },900);
 
 /* candle */
-const last=document.getElementById("lastPage");
-
-last.addEventListener("click",()=>{
+document.getElementById("lastPage").onclick=()=>{
   document.getElementById("flame").style.display="none";
   document.getElementById("wish").innerHTML="Happy Birthday My Love ❤️🎉";
-
-  for(let i=0;i<50;i++){
-    const c=document.createElement("div");
-    c.className="confetti";
-    c.style.left=Math.random()*100+"%";
-    c.style.background=`hsl(${Math.random()*360},80%,60%)`;
-    last.appendChild(c);
-    setTimeout(()=>c.remove(),2500);
-  }
-});
-
-/* swipe */
-let startX=0;
-document.addEventListener("touchstart",e=>startX=e.touches[0].clientX);
-document.addEventListener("touchend",e=>{
-  if(e.changedTouches[0].clientX<startX-40) next();
-});
+};
 </script>
 
 </body>
