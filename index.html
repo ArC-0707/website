@@ -1,251 +1,230 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
 <title>Happy Birthday ❤️</title>
 
 <style>
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Segoe UI', cursive;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Segoe UI',cursive;
 }
 
 body{
-    overflow:hidden;
+  background:#000;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  overflow:hidden;
 }
 
-/* ================= PAGES ================= */
+/* 9:16 phone frame */
+.app{
+  width:100%;
+  max-width:420px;
+  aspect-ratio:9/16;
+  position:relative;
+  overflow:hidden;
+  border-radius:25px;
+  box-shadow:0 0 25px rgba(0,0,0,.5);
+}
+
+/* ===== pages ===== */
 .page{
-    height:100vh;
-    width:100vw;
-    position:absolute;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-    padding:30px;
-    left:100%;
-    transition:0.8s ease;
-    color:white;
+  position:absolute;
+  width:100%;
+  height:100%;
+  left:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:30px;
+  color:white;
+  transition:.5s ease;
+  background-size:300% 300%;
+  animation:gradient 8s ease infinite;
 }
 
-.page.active{
-    left:0;
+.page.active{ left:0; }
+
+@keyframes gradient{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
 }
 
-/* ===== animated gradient backgrounds ===== */
-.bg1{ background:linear-gradient(-45deg,#ff9a9e,#fad0c4,#fad0c4,#ffdde1); }
-.bg2{ background:linear-gradient(-45deg,#a18cd1,#fbc2eb,#fad0c4,#ff9a9e); }
-.bg3{ background:linear-gradient(-45deg,#ff758c,#ff7eb3,#ffb199,#ff9a9e); }
-.bg4{ background:linear-gradient(-45deg,#89f7fe,#66a6ff,#c2e9fb,#a1c4fd); }
-.bg5{ background:linear-gradient(-45deg,#fddb92,#d1fdff,#fbc2eb,#ff9a9e); }
+/* gradients */
+.g1{background:linear-gradient(45deg,#ff9a9e,#fad0c4);}
+.g2{background:linear-gradient(45deg,#a18cd1,#fbc2eb);}
+.g3{background:linear-gradient(45deg,#ff758c,#ff7eb3);}
+.g4{background:linear-gradient(45deg,#89f7fe,#66a6ff);}
+.g5{background:linear-gradient(45deg,#fddb92,#fbc2eb);}
 
-.page{
-    background-size:400% 400%;
-    animation:gradientMove 12s ease infinite;
-}
-
-@keyframes gradientMove{
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 50%}
-}
-
-/* ================= TEXT ================= */
+/* text */
 h1{
-    font-size:3rem;
-    margin-bottom:20px;
-    animation:fadeIn 2s;
+  font-size:2.2rem;
+  margin-bottom:15px;
+  animation:fadeUp 1s ease;
 }
 
 p{
-    font-size:1.4rem;
-    max-width:600px;
-    opacity:0.95;
-    animation:fadeIn 3s;
+  font-size:1.1rem;
+  margin-bottom:25px;
 }
 
-@keyframes fadeIn{
-    from{opacity:0; transform:translateY(20px)}
-    to{opacity:1; transform:translateY(0)}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1}
 }
 
-/* ================= BUTTON ================= */
+/* button */
 button{
-    margin-top:40px;
-    padding:14px 35px;
-    font-size:1.1rem;
-    border:none;
-    border-radius:30px;
-    background:white;
-    color:#ff4d88;
-    cursor:pointer;
-    font-weight:bold;
-    box-shadow:0 0 15px rgba(255,255,255,0.8);
-    transition:0.3s;
+  padding:12px 28px;
+  border:none;
+  border-radius:25px;
+  font-weight:bold;
+  background:white;
+  color:#ff4d88;
+  cursor:pointer;
+  z-index:5;
 }
 
-button:hover{
-    transform:scale(1.1);
-    box-shadow:0 0 25px white;
-}
-
-/* ================= FLOATING HEARTS ================= */
+/* ===== LIGHT HEARTS ===== */
 .heart{
-    position:absolute;
-    color:white;
-    font-size:20px;
-    animation:float 7s linear infinite;
+  position:absolute;
+  font-size:18px;
+  opacity:.9;
+  animation:float 6s linear forwards;
+  pointer-events:none; /* IMPORTANT FIX */
 }
 
 @keyframes float{
-    from{transform:translateY(110vh); opacity:0}
-    30%{opacity:1}
-    to{transform:translateY(-10vh); opacity:0}
+  from{transform:translateY(110%);opacity:0}
+  30%{opacity:1}
+  to{transform:translateY(-20%);opacity:0}
 }
 
-/* ================= CAKE ================= */
-.cake{
-    margin-top:30px;
-    position:relative;
-}
-
-.layer{
-    width:240px;
-    height:60px;
-    background:#ff9ecb;
-    border-radius:12px;
-    margin:8px auto;
-    box-shadow:0 5px 15px rgba(0,0,0,0.3);
-}
-
-.candle{
-    width:14px;
-    height:40px;
-    background:white;
-    margin:auto;
-    position:relative;
-    top:-10px;
-}
+/* ===== cake ===== */
+.cake{margin-top:20px}
+.layer{width:170px;height:40px;background:#ff9ecb;margin:6px auto;border-radius:10px}
+.candle{width:10px;height:40px;background:white;margin:auto;position:relative}
 
 .flame{
-    width:14px;
-    height:14px;
-    background:orange;
-    border-radius:50%;
-    position:absolute;
-    top:-14px;
-    animation:flicker 0.15s infinite alternate;
+  width:14px;height:18px;background:orange;border-radius:50%;
+  position:absolute;top:-18px;left:-2px;
+  animation:flicker .2s infinite alternate;
 }
+@keyframes flicker{from{transform:scale(1)}to{transform:scale(1.25)}}
 
-@keyframes flicker{
-    from{transform:scale(1)}
-    to{transform:scale(1.25)}
-}
-
-/* confetti */
 .confetti{
-    position:absolute;
-    width:8px;
-    height:8px;
-    background:white;
-    animation:fall 3s linear forwards;
+  position:absolute;
+  width:6px;height:6px;
+  animation:fall 2.5s linear forwards;
 }
-
 @keyframes fall{
-    to{transform:translateY(100vh) rotate(360deg)}
+  to{transform:translateY(100vh) rotate(360deg)}
 }
 </style>
 </head>
 
 <body>
 
-<!-- PAGE 1 -->
-<div class="page bg1 active">
-    <h1>Happy Birthday ❤️</h1>
-    <p>You are the most beautiful chapter of my life.</p>
-    <button onclick="nextPage()">Next ➜</button>
+<div class="app">
+
+<!-- 4 cute pages -->
+<div class="page g1 active">
+<h1>Happy Birthday ❤️</h1>
+<p>You make my world brighter every day.</p>
+<button onclick="next()">Next ➜</button>
 </div>
 
-<!-- PAGE 2 -->
-<div class="page bg2">
-    <h1>My Sunshine ☀️</h1>
-    <p>Every day feels brighter because you exist.</p>
-    <button onclick="nextPage()">Next ➜</button>
+<div class="page g2">
+<h1>My Sunshine ☀️</h1>
+<p>Your smile is my favorite thing.</p>
+<button onclick="next()">Next ➜</button>
 </div>
 
-<!-- PAGE 3 -->
-<div class="page bg3">
-    <h1>My Favorite Person 💕</h1>
-    <p>I fall in love with you again and again every single day.</p>
-    <button onclick="nextPage()">Next ➜</button>
+<div class="page g3">
+<h1>My Favorite Person 💕</h1>
+<p>Every moment with you is special.</p>
+<button onclick="next()">Next ➜</button>
 </div>
 
-<!-- PAGE 4 -->
-<div class="page bg4">
-    <h1>Forever Together 🌹</h1>
-    <p>No matter where life goes, my place will always be next to you.</p>
-    <button onclick="nextPage()">Next ➜</button>
+<div class="page g4">
+<h1>Forever Us 🌹</h1>
+<p>I promise to love you forever.</p>
+<button onclick="next()">Next ➜</button>
 </div>
 
-<!-- PAGE 5 -->
-<div class="page bg5">
-    <h1>Make a Wish 🎂</h1>
+<!-- last page -->
+<div class="page g5" id="lastPage">
+<h1>Make a Wish 🎂</h1>
 
-    <div class="cake">
-        <div class="candle"><div class="flame" id="flame"></div></div>
-        <div class="layer"></div>
-        <div class="layer"></div>
-        <div class="layer"></div>
-    </div>
-
-    <p>Tap anywhere to blow the candle 💨</p>
-    <h2 id="wish" style="margin-top:20px;"></h2>
+<div class="cake">
+  <div class="candle"><div class="flame" id="flame"></div></div>
+  <div class="layer"></div>
+  <div class="layer"></div>
+  <div class="layer"></div>
 </div>
 
+<p>Tap cake to blow candle 💨</p>
+<h2 id="wish"></h2>
+</div>
+
+</div>
 
 <script>
-let current = 0;
-const pages = document.querySelectorAll(".page");
+let current=0;
+const pages=document.querySelectorAll(".page");
 
 /* next page */
-function nextPage(){
-    pages[current].classList.remove("active");
-    current++;
-    pages[current].classList.add("active");
+function next(){
+  pages[current].classList.remove("active");
+  current++;
+  pages[current].classList.add("active");
 }
 
-/* floating hearts */
+/* LIGHT hearts only pages 1-4 */
 setInterval(()=>{
-    const h=document.createElement("div");
-    h.className="heart";
-    h.innerHTML="❤";
-    h.style.left=Math.random()*100+"vw";
-    h.style.fontSize=(15+Math.random()*25)+"px";
-    document.body.appendChild(h);
-    setTimeout(()=>h.remove(),7000);
-},400);
+  if(current===4) return;
 
-/* blow candle + confetti */
-document.body.addEventListener("click",()=>{
-    const flame=document.getElementById("flame");
-    if(flame && flame.style.display!=="none"){
-        flame.style.display="none";
-        document.getElementById("wish").innerHTML="Happy Birthday My Love ❤️🎉";
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="❤";
+  h.style.left=Math.random()*100+"%";
+  pages[current].appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+},900);
 
-        for(let i=0;i<80;i++){
-            const c=document.createElement("div");
-            c.className="confetti";
-            c.style.left=Math.random()*100+"vw";
-            c.style.background=`hsl(${Math.random()*360},80%,60%)`;
-            document.body.appendChild(c);
-            setTimeout(()=>c.remove(),3000);
-        }
-    }
+/* candle */
+const last=document.getElementById("lastPage");
+
+last.addEventListener("click",()=>{
+  document.getElementById("flame").style.display="none";
+  document.getElementById("wish").innerHTML="Happy Birthday My Love ❤️🎉";
+
+  for(let i=0;i<50;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"%";
+    c.style.background=`hsl(${Math.random()*360},80%,60%)`;
+    last.appendChild(c);
+    setTimeout(()=>c.remove(),2500);
+  }
+});
+
+/* swipe */
+let startX=0;
+document.addEventListener("touchstart",e=>startX=e.touches[0].clientX);
+document.addEventListener("touchend",e=>{
+  if(e.changedTouches[0].clientX<startX-40) next();
 });
 </script>
 
