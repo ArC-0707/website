@@ -1,320 +1,620 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Happy Birthday ❤️</title>
-
+<title>Arc Electricals — BE/BTech Project Kits</title>
+<meta name="description" content="Ready-to-build BE/BTech electronics & embedded systems projects. PCB files, firmware, documentation and viva support — engineered in Pune.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Segoe UI',cursive;
-}
+  :root{
+    --pcb-dark: #0a1310;
+    --pcb-dark-2: #0e1a16;
+    --pcb-green: #0f4d34;
+    --pcb-green-light: #1c7a4f;
+    --copper: #c9884b;
+    --copper-light: #e3ac6f;
+    --silk: #eae7d9;
+    --muted: #93aa9f;
+    --led: #ff5a4e;
+    --led-glow: rgba(255,90,78,0.35);
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Inter', sans-serif;
+    --radius: 6px;
+  }
 
-body{
-  background:black;
-  overflow:hidden;
-}
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background: var(--pcb-dark);
+    color: var(--silk);
+    font-family: var(--sans);
+    line-height:1.6;
+    overflow-x:hidden;
+  }
 
-/* ===== 9:16 FULL MOBILE ===== */
-.app{
-  width:100%;
-  max-width:420px;
-  height:100dvh;
-  margin:auto;
-  position:relative;
-  overflow:hidden;
-}
+  a{ color:inherit; text-decoration:none; }
+  ul{ list-style:none; }
 
-/* ===== PAGES ===== */
-.page{
-  position:absolute;
-  width:100%;
-  height:100%;
-  top:0;
-  left:100%;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  padding:28px;
-  color:white;
-  transition:.5s ease;
-  background-size:300% 300%;
-  animation:gradient 8s ease infinite;
-}
+  ::selection{ background: var(--copper); color:#0a1310; }
 
-.page.active{ left:0; }
+  /* ---------- background PCB texture ---------- */
+  .pcb-bg{
+    position:fixed; inset:0; z-index:-2;
+    background:
+      radial-gradient(ellipse at 20% 10%, rgba(28,122,79,0.14), transparent 55%),
+      radial-gradient(ellipse at 85% 80%, rgba(201,136,75,0.10), transparent 50%),
+      var(--pcb-dark);
+  }
+  .pcb-bg::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(28,122,79,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(28,122,79,0.06) 1px, transparent 1px);
+    background-size: 42px 42px;
+  }
 
-@keyframes gradient{
-  0%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 50%}
-}
+  /* ---------- scrollbar ---------- */
+  ::-webkit-scrollbar{ width:10px; }
+  ::-webkit-scrollbar-track{ background:var(--pcb-dark); }
+  ::-webkit-scrollbar-thumb{ background:var(--pcb-green); border-radius:10px; }
 
-/* gradients */
-.g1{background:linear-gradient(45deg,#ff9a9e,#fad0c4);}
-.g2{background:linear-gradient(45deg,#a18cd1,#fbc2eb);}
-.g3{background:linear-gradient(45deg,#ff758c,#ff7eb3);}
-.g4{background:linear-gradient(45deg,#89f7fe,#66a6ff);}
-.g5{background:linear-gradient(45deg,#fddb92,#fbc2eb);}
+  .container{ max-width:1180px; margin:0 auto; padding:0 24px; }
+  .eyebrow{
+    font-family:var(--mono); font-size:12px; letter-spacing:.18em;
+    text-transform:uppercase; color:var(--copper-light);
+    display:flex; align-items:center; gap:10px; margin-bottom:14px;
+  }
+  .eyebrow::before{ content:""; width:22px; height:2px; background:var(--copper); display:inline-block; }
 
-/* ===== TEXT ===== */
-h1{
-  font-size:2.2rem;
-  margin-bottom:15px;
-  animation:fadeUp 1s ease;
-}
-p{
-  font-size:1.1rem;
-  margin-bottom:25px;
-}
+  h1,h2,h3{ font-family:var(--mono); font-weight:800; letter-spacing:-.01em; }
 
-@keyframes fadeUp{
-  from{opacity:0;transform:translateY(20px)}
-  to{opacity:1}
-}
+  /* ---------- nav ---------- */
+  header{
+    position:sticky; top:0; z-index:100;
+    background:rgba(10,19,16,0.88); backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(201,136,75,0.18);
+  }
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 24px; max-width:1180px; margin:0 auto;
+  }
+  .logo{
+    font-family:var(--mono); font-weight:800; font-size:18px;
+    display:flex; align-items:center; gap:10px; letter-spacing:.02em;
+  }
+  .logo .chip{
+    width:16px; height:16px; border:2px solid var(--copper);
+    border-radius:3px; position:relative; flex-shrink:0;
+  }
+  .logo .chip::after{
+    content:""; position:absolute; inset:3px; background:var(--pcb-green-light);
+    border-radius:1px;
+  }
+  .logo span{ color:var(--copper-light); }
+  .nav-links{ display:flex; gap:32px; align-items:center; }
+  .nav-links a{
+    font-family:var(--mono); font-size:13px; color:var(--muted);
+    transition:color .2s;
+  }
+  .nav-links a:hover{ color:var(--silk); }
+  .btn{
+    font-family:var(--mono); font-size:13px; font-weight:700;
+    padding:10px 20px; border-radius:var(--radius); cursor:pointer;
+    border:1px solid transparent; transition: all .2s ease; display:inline-flex;
+    align-items:center; gap:8px; white-space:nowrap;
+  }
+  .btn-primary{ background:var(--copper); color:#160f08; }
+  .btn-primary:hover{ background:var(--copper-light); transform:translateY(-1px); }
+  .btn-ghost{ border-color:rgba(234,231,217,0.25); color:var(--silk); }
+  .btn-ghost:hover{ border-color:var(--copper); color:var(--copper-light); }
+  .menu-btn{ display:none; background:none; border:none; color:var(--silk); font-size:22px; cursor:pointer; }
 
-/* ===== BUTTON ===== */
-button{
-  padding:12px 28px;
-  border:none;
-  border-radius:25px;
-  background:white;
-  color:#ff4d88;
-  font-weight:bold;
-  cursor:pointer;
-}
+  /* ---------- hero ---------- */
+  .hero{ position:relative; padding:96px 24px 70px; overflow:hidden; }
+  .hero-inner{ max-width:1180px; margin:0 auto; position:relative; z-index:2; }
+  .hero svg.traces{ position:absolute; top:0; right:-60px; width:620px; max-width:60vw; opacity:.85; z-index:1; }
+  .trace-line{
+    fill:none; stroke:var(--pcb-green-light); stroke-width:2;
+    stroke-dasharray: 6 8; animation: dash 18s linear infinite;
+    opacity:.55;
+  }
+  .trace-line.copper{ stroke:var(--copper); opacity:.5; }
+  @keyframes dash{ to{ stroke-dashoffset:-400; } }
+  .node{ fill:var(--copper-light); }
+  .node.pulse{ animation: pulse 2.4s ease-in-out infinite; }
+  @keyframes pulse{ 0%,100%{ opacity:.4; r:3; } 50%{ opacity:1; r:5; } }
 
-/* ===== HEARTS (pages 1-4 only) ===== */
-.heart{
-  position:absolute;
-  pointer-events:none;
-  animation:float 6s linear forwards;
-}
+  .hero h1{
+    font-size:clamp(38px, 6vw, 68px); line-height:1.02; color:var(--silk);
+    max-width:780px;
+  }
+  .hero h1 .hl{ color:var(--copper-light); }
+  .hero p.lead{
+    font-size:17px; color:var(--muted); max-width:520px; margin:22px 0 32px;
+  }
+  .hero-ctas{ display:flex; gap:14px; flex-wrap:wrap; margin-bottom:56px; }
 
-@keyframes float{
-  from{transform:translateY(110%);opacity:0}
-  30%{opacity:1}
-  to{transform:translateY(-20%);opacity:0}
-}
+  .stat-strip{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
+    background:rgba(201,136,75,0.18); border:1px solid rgba(201,136,75,0.18);
+    border-radius:var(--radius); overflow:hidden; max-width:900px;
+  }
+  .stat{ background:var(--pcb-dark-2); padding:20px 18px; }
+  .stat .num{ font-family:var(--mono); font-size:26px; font-weight:800; color:var(--copper-light); }
+  .stat .label{ font-size:12px; color:var(--muted); margin-top:4px; }
 
-/* ===== CAKE ===== */
-.cake{margin-top:20px}
+  /* ---------- section shared ---------- */
+  section{ padding:88px 0; }
+  .section-head{ max-width:640px; margin-bottom:48px; }
+  .section-head h2{ font-size:clamp(28px,4vw,38px); color:var(--silk); }
+  .section-head p{ color:var(--muted); margin-top:12px; font-size:15px; }
 
-.layer{
-  width:170px;
-  height:40px;
-  background:#ff9ecb;
-  margin:6px auto;
-  border-radius:10px;
-}
+  /* ---------- filters ---------- */
+  .filters{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:36px; }
+  .filter-chip{
+    font-family:var(--mono); font-size:12.5px; padding:9px 16px;
+    border:1px solid rgba(234,231,217,0.2); border-radius:20px;
+    color:var(--muted); cursor:pointer; transition:all .2s; background:none;
+  }
+  .filter-chip:hover{ border-color:var(--copper); color:var(--silk); }
+  .filter-chip.active{ background:var(--pcb-green-light); border-color:var(--pcb-green-light); color:#eafff2; }
 
-.candle{
-  width:10px;
-  height:40px;
-  background:white;
-  margin:auto;
-  position:relative;
-}
+  /* ---------- project grid ---------- */
+  .grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+  .card{
+    background:var(--pcb-dark-2); border:1px solid rgba(234,231,217,0.1);
+    border-radius:var(--radius); padding:22px; cursor:pointer; position:relative;
+    transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+    display:flex; flex-direction:column; gap:12px;
+  }
+  .card::before, .card::after{
+    content:""; position:absolute; width:10px; height:10px; border-radius:50%;
+    background:var(--pcb-dark); border:2px solid var(--copper); top:12px;
+  }
+  .card::before{ left:12px; } .card::after{ right:12px; }
+  .card:hover{
+    transform:translateY(-4px); border-color:var(--copper);
+    box-shadow:0 14px 32px rgba(0,0,0,0.35), 0 0 0 1px rgba(201,136,75,0.15);
+  }
+  .card-top{ display:flex; justify-content:space-between; align-items:flex-start; margin-top:6px; }
+  .card-code{ font-family:var(--mono); font-size:11px; color:var(--copper-light); letter-spacing:.08em; }
+  .badge-volt{
+    font-family:var(--mono); font-size:11px; font-weight:700; padding:3px 9px;
+    border-radius:12px; border:1px solid; letter-spacing:.03em;
+  }
+  .v-33{ color:#7ee2a8; border-color:#7ee2a8; background:rgba(126,226,168,0.08); }
+  .v-5{ color:var(--copper-light); border-color:var(--copper-light); background:rgba(227,172,111,0.08); }
+  .v-12{ color:var(--led); border-color:var(--led); background:rgba(255,90,78,0.08); }
 
-.flame{
-  width:14px;
-  height:18px;
-  background:orange;
-  border-radius:50%;
-  position:absolute;
-  top:-18px;
-  left:-2px;
-  animation:flicker .2s infinite alternate;
-}
+  .card h3{ font-size:17px; color:var(--silk); line-height:1.35; }
+  .card .tag{ font-family:var(--mono); font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; }
+  .card p.desc{ font-size:13.5px; color:var(--muted); flex-grow:1; }
+  .card-bottom{ display:flex; justify-content:space-between; align-items:center; margin-top:6px; padding-top:14px; border-top:1px dashed rgba(234,231,217,0.15); }
+  .price{ font-family:var(--mono); font-weight:800; font-size:19px; color:var(--silk); }
+  .price span{ font-size:11px; color:var(--muted); font-weight:400; }
+  .view-link{ font-family:var(--mono); font-size:12px; color:var(--copper-light); }
 
-@keyframes flicker{
-  from{transform:scale(1)}
-  to{transform:scale(1.25)}
-}
+  /* ---------- why us ---------- */
+  .why-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
+  .why-card{ padding:24px; border:1px solid rgba(234,231,217,0.1); border-radius:var(--radius); background:var(--pcb-dark-2); }
+  .why-card .ico{ width:36px; height:36px; margin-bottom:16px; }
+  .why-card h3{ font-size:15px; color:var(--silk); margin-bottom:8px; }
+  .why-card p{ font-size:13px; color:var(--muted); }
 
-/* flame fade */
-.fadeFlame{
-  animation:fade .5s forwards;
-}
-@keyframes fade{to{opacity:0}}
+  /* ---------- how it works ---------- */
+  .steps{ display:grid; grid-template-columns:repeat(4,1fr); gap:0; position:relative; }
+  .step{ padding:0 20px 0 0; position:relative; }
+  .step .n{ font-family:var(--mono); font-size:34px; font-weight:800; color:var(--pcb-green-light); opacity:.7; }
+  .step h3{ font-size:15px; margin:10px 0 8px; color:var(--silk); }
+  .step p{ font-size:13px; color:var(--muted); }
+  .step:not(:last-child)::after{
+    content:""; position:absolute; top:20px; right:0; width:20px; height:1px;
+    background:repeating-linear-gradient(90deg, var(--copper) 0 6px, transparent 6px 10px);
+  }
 
-/* cake bounce */
-.cakePop{
-  animation:cakeJump .6s ease;
-}
-@keyframes cakeJump{
-  0%{transform:scale(1)}
-  50%{transform:scale(1.15)}
-  100%{transform:scale(1)}
-}
+  /* ---------- contact ---------- */
+  .contact-panel{
+    background:linear-gradient(135deg, var(--pcb-green) 0%, var(--pcb-dark-2) 100%);
+    border:1px solid rgba(201,136,75,0.25); border-radius:10px;
+    padding:52px; display:flex; justify-content:space-between; align-items:center; gap:32px; flex-wrap:wrap;
+  }
+  .contact-panel h2{ font-size:clamp(24px,3.4vw,32px); color:var(--silk); max-width:420px; }
+  .contact-panel p{ color:var(--muted); margin-top:10px; font-size:14px; max-width:420px; }
+  .contact-actions{ display:flex; gap:12px; flex-wrap:wrap; }
 
-/* wish text */
-.wishText{
-  font-size:1.6rem;
-  margin-top:20px;
-  opacity:0;
-}
-.wishShow{
-  animation:popText .8s forwards;
-}
-@keyframes popText{
-  0%{transform:scale(0);opacity:0}
-  70%{transform:scale(1.2)}
-  100%{transform:scale(1);opacity:1}
-}
+  footer{ padding:36px 24px; border-top:1px solid rgba(234,231,217,0.1); }
+  .footer-inner{
+    max-width:1180px; margin:0 auto; display:flex; justify-content:space-between;
+    align-items:center; flex-wrap:wrap; gap:12px;
+  }
+  .footer-inner p{ font-size:12.5px; color:var(--muted); font-family:var(--mono); }
 
-/* confetti */
-.confetti{
-  position:absolute;
-  width:7px;
-  height:7px;
-  top:-10px;
-  animation:confettiFall 3s linear forwards;
-}
-@keyframes confettiFall{
-  to{transform:translateY(110vh) rotate(720deg)}
-}
+  /* ---------- modal ---------- */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(6,10,8,0.75); backdrop-filter:blur(4px);
+    z-index:1000; display:none; align-items:center; justify-content:center; padding:24px;
+  }
+  .modal-overlay.open{ display:flex; }
+  .modal{
+    background:var(--pcb-dark-2); border:1px solid var(--copper); border-radius:10px;
+    max-width:640px; width:100%; max-height:86vh; overflow-y:auto; padding:36px;
+    position:relative; animation: modalIn .25s ease;
+  }
+  @keyframes modalIn{ from{ opacity:0; transform:translateY(14px);} to{ opacity:1; transform:translateY(0);} }
+  .modal-close{
+    position:absolute; top:20px; right:20px; background:none; border:none;
+    color:var(--muted); font-size:22px; cursor:pointer; line-height:1;
+  }
+  .modal-close:hover{ color:var(--copper-light); }
+  .modal .card-code{ margin-bottom:10px; display:block; }
+  .modal h2{ font-size:24px; color:var(--silk); margin-bottom:6px; }
+  .modal .tag{ display:block; margin-bottom:18px; }
+  .modal-desc{ color:var(--muted); font-size:14.5px; margin-bottom:22px; }
+  .modal-section-title{
+    font-family:var(--mono); font-size:11.5px; text-transform:uppercase; letter-spacing:.1em;
+    color:var(--copper-light); margin:22px 0 10px;
+  }
+  .modal ul.feature-list li{
+    font-size:14px; color:var(--silk); padding:7px 0 7px 22px; position:relative;
+    border-bottom:1px dashed rgba(234,231,217,0.08);
+  }
+  .modal ul.feature-list li::before{
+    content:"▸"; position:absolute; left:0; color:var(--pcb-green-light);
+  }
+  .modal-footer{
+    display:flex; justify-content:space-between; align-items:center; margin-top:26px;
+    padding-top:22px; border-top:1px solid rgba(234,231,217,0.12); flex-wrap:wrap; gap:14px;
+  }
+  .modal-price{ font-family:var(--mono); font-size:26px; font-weight:800; color:var(--silk); }
 
-/* party poppers */
-.popper{
-  position:absolute;
-  bottom:0;
-  font-size:26px;
-  animation:popperShoot .8s ease-out forwards;
-}
-@keyframes popperShoot{
-  0%{transform:translateY(0)}
-  100%{transform:translateY(-160px)}
-}
+  /* ---------- responsive ---------- */
+  @media (max-width:900px){
+    .grid{ grid-template-columns:repeat(2,1fr); }
+    .why-grid{ grid-template-columns:repeat(2,1fr); }
+    .steps{ grid-template-columns:repeat(2,1fr); row-gap:28px; }
+    .step:not(:last-child)::after{ display:none; }
+    .stat-strip{ grid-template-columns:repeat(2,1fr); }
+  }
+  @media (max-width:640px){
+    .nav-links{
+      position:fixed; top:64px; left:0; right:0; background:var(--pcb-dark-2);
+      flex-direction:column; padding:20px 24px; gap:18px; border-bottom:1px solid rgba(201,136,75,0.2);
+      transform:translateY(-130%); transition:transform .25s ease; z-index:99;
+    }
+    .nav-links.open{ transform:translateY(0); }
+    .menu-btn{ display:block; }
+    .grid{ grid-template-columns:1fr; }
+    .why-grid{ grid-template-columns:1fr; }
+    .steps{ grid-template-columns:1fr; }
+    .hero svg.traces{ display:none; }
+    .contact-panel{ padding:32px 24px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; }
+  }
+
+  a:focus-visible, button:focus-visible, .card:focus-visible{
+    outline:2px solid var(--copper-light); outline-offset:2px;
+  }
 </style>
 </head>
-
 <body>
 
-<div class="app">
+<div class="pcb-bg"></div>
 
-<!-- PAGE 1 -->
-<div class="page g1 active">
-<h1>Happy Birthday LEKHA❤️</h1>
-<p>The world became beautiful because you were born. Special thanks for GOD, ur PARENTS, Doctors, Family, cause of whom U are alive.</p>
-<button onclick="next()">Next ➜</button>
-</div>
+<header>
+  <nav>
+    <div class="logo"><span class="chip"></span>ARC <span>ELECTRICALS</span></div>
+    <div class="nav-links" id="navLinks">
+      <a href="#projects">Projects</a>
+      <a href="#why">Why Us</a>
+      <a href="#how">Process</a>
+      <a href="#contact">Contact</a>
+      <a href="#contact" class="btn btn-primary">Get a Quote</a>
+    </div>
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle menu">☰</button>
+  </nav>
+</header>
 
-<!-- PAGE 2 -->
-<div class="page g2">
-<h1>My Sunshine ☀️</h1>
-<p>Your smile lights up my life every day. From the day I met u and saw ur smile, I cant get it out of my mind. Its beautiful..!! Stay Smiling as always.</p>
-<button onclick="next()">Next ➜</button>
-</div>
+<section class="hero">
+  <svg class="traces" viewBox="0 0 620 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path class="trace-line" d="M20,60 L180,60 L180,140 L340,140 L340,40 L560,40" />
+    <path class="trace-line copper" d="M40,220 L220,220 L220,300 L120,300 L120,400 L400,400" />
+    <path class="trace-line" d="M300,10 L300,90 L480,90 L480,260 L600,260" />
+    <path class="trace-line copper" d="M10,340 L10,460 L260,460" />
+    <circle class="node pulse" cx="180" cy="60" r="4" />
+    <circle class="node" cx="340" cy="140" r="3.5" />
+    <circle class="node pulse" cx="220" cy="300" r="4" />
+    <circle class="node" cx="480" cy="90" r="3.5" />
+    <circle class="node pulse" cx="120" cy="400" r="4" />
+    <circle class="node" cx="600" cy="260" r="3.5" />
+  </svg>
 
-<!-- PAGE 3 -->
-<div class="page g3">
-<h1>My Favorite Person 💕</h1>
-<p>Every moment with you feels magical. Even for 2 mins, meeting u makes me feel more happy and joyfull. U are a lil bit overthinker and u try to hide things from others, feeling like u are strong..but u can always share things with me..ALWAYS!!</p>
-<button onclick="next()">Next ➜</button>
-</div>
+  <div class="hero-inner">
+    <div class="eyebrow">Pune · Final-year project kits</div>
+    <h1>Final year projects, <span class="hl">engineered</span> — not just downloaded.</h1>
+    <p class="lead">Ten working BE/BTech electronics builds — schematic to firmware to viva. Real PCB files, tested code, and a documentation report that survives your panel's questions.</p>
+    <div class="hero-ctas">
+      <a href="#projects" class="btn btn-primary">View project catalog</a>
+      <a href="#contact" class="btn btn-ghost">Request a custom build</a>
+    </div>
 
-<!-- PAGE 4 -->
-<div class="page g4">
-<h1>Forever Us 🌹</h1>
-<p>I promise to love you today, tomorrow, always. I know its over excitement, but it is what it is and everythings real.</p>
-<button onclick="next()">Next ➜</button>
-</div>
+    <div class="stat-strip">
+      <div class="stat"><div class="num">10</div><div class="label">Ready-to-build projects</div></div>
+      <div class="stat"><div class="num">100%</div><div class="label">Tested firmware &amp; PCB</div></div>
+      <div class="stat"><div class="num">4</div><div class="label">Domains covered</div></div>
+      <div class="stat"><div class="num">1:1</div><div class="label">Viva &amp; demo support</div></div>
+    </div>
+  </div>
+</section>
 
-<!-- PAGE 5 -->
-<div class="page g5" id="lastPage">
-<h1>Make a Wish 🎂</h1>
+<section id="projects">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Catalog</div>
+      <h2>Pick a build, not a black box</h2>
+      <p>Every kit ships with schematic + PCB source, commented firmware, a BOM you can actually source, and a report formatted for submission. Voltage badge = build difficulty.</p>
+    </div>
 
-<div class="cake" id="cake">
-  <div class="candle"><div class="flame" id="flame"></div></div>
-  <div class="layer"></div>
-  <div class="layer"></div>
-  <div class="layer"></div>
-</div>
+    <div class="filters" id="filters">
+      <button class="filter-chip active" data-filter="all">All projects</button>
+      <button class="filter-chip" data-filter="embedded">Embedded Systems</button>
+      <button class="filter-chip" data-filter="iot">IoT</button>
+      <button class="filter-chip" data-filter="power">Power Electronics</button>
+      <button class="filter-chip" data-filter="robotics">Robotics</button>
+    </div>
 
-<p>Tap cake to blow candle 💨</p>
-<h2 id="wish" class="wishText"></h2>
-</div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
 
+<section id="why">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Why Arc</div>
+      <h2>Built by someone who's built these</h2>
+      <p>No template PDFs. Every kit is designed, soldered, and flashed before it's listed.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="var(--copper-light)" stroke-width="1.6"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></svg>
+        <h3>Real hardware, tested</h3>
+        <p>Every PCB is fabricated and bench-tested before it goes on the list — not just simulated in software.</p>
+      </div>
+      <div class="why-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="var(--copper-light)" stroke-width="1.6"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <h3>Documentation that holds up</h3>
+        <p>A submission-ready report: block diagram, working, results, and references — written to be understood, not skimmed.</p>
+      </div>
+      <div class="why-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="var(--copper-light)" stroke-width="1.6"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <h3>Viva &amp; demo support</h3>
+        <p>A walkthrough call before your evaluation so you can explain your own circuit with confidence — not just recite it.</p>
+      </div>
+      <div class="why-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="var(--copper-light)" stroke-width="1.6"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        <h3>Customizable scope</h3>
+        <p>Need it in your college's format, or want a feature added or removed? Tell us and we'll adjust the build.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Process</div>
+      <h2>From order to viva</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="n">01</div><h3>Choose a project</h3><p>Browse the catalog and message us your pick, or ask for something custom.</p></div>
+      <div class="step"><div class="n">02</div><h3>Get your files</h3><p>Receive schematic, PCB Gerbers, firmware source, and BOM within 24–48 hours.</p></div>
+      <div class="step"><div class="n">03</div><h3>Build &amp; test</h3><p>Assemble with our guide, or order the pre-built module if you'd rather skip soldering.</p></div>
+      <div class="step"><div class="n">04</div><h3>Present with confidence</h3><p>Use the included report and a support call to prep for your demo and viva.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="container">
+    <div class="contact-panel">
+      <div>
+        <h2>Have a project in mind we haven't listed?</h2>
+        <p>Send your topic, deadline, and budget on WhatsApp — most custom builds are scoped within a day.</p>
+      </div>
+      <div class="contact-actions">
+        <a href="https://wa.me/91XXXXXXXXXX?text=Hi%20Arc%20Electricals%2C%20I%27d%20like%20to%20know%20more%20about%20your%20BE%2FBTech%20project%20kits." class="btn btn-primary" target="_blank" rel="noopener">Chat on WhatsApp</a>
+        <a href="mailto:hello@arcelectricals.example" class="btn btn-ghost">Email us</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <p>© <span id="year"></span> ARC ELECTRICALS — Pune, India</p>
+    <p>PCB · Firmware · Documentation</p>
+  </div>
+</footer>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modal" role="dialog" aria-modal="true">
+    <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+    <span class="card-code" id="mCode"></span>
+    <h2 id="mTitle"></h2>
+    <span class="tag" id="mTag"></span>
+    <p class="modal-desc" id="mDesc"></p>
+
+    <div class="modal-section-title">What you get</div>
+    <ul class="feature-list" id="mIncludes"></ul>
+
+    <div class="modal-section-title">Key features</div>
+    <ul class="feature-list" id="mFeatures"></ul>
+
+    <div class="modal-footer">
+      <div class="modal-price" id="mPrice"></div>
+      <a href="#" class="btn btn-primary" id="mOrder" target="_blank" rel="noopener">Order on WhatsApp</a>
+    </div>
+  </div>
 </div>
 
 <script>
-let current=0;
-const pages=document.querySelectorAll(".page");
+document.getElementById('year').textContent = new Date().getFullYear();
 
-/* next page */
-function next(){
-  pages[current].classList.remove("active");
-  current++;
-  pages[current].classList.add("active");
+const WHATSAPP_NUMBER = "91XXXXXXXXXX"; // TODO: replace with your real WhatsApp number, country code first, no + or spaces
+
+const projects = [
+  {
+    code: "ARC-001", title: "Sensorless Three-Phase BLDC ESC", category: "power",
+    categoryLabel: "Power Electronics", volt: "12V", tier: "v-12",
+    price: 4999,
+    desc: "A from-scratch electronic speed controller for sensorless BLDC motors, built around IR2101 gate drivers and an STM32 for BEMF zero-crossing commutation.",
+    includes: ["Full schematic & PCB (EasyEDA/Gerber)", "STM32 firmware source, commented", "Complete BOM with supplier links", "Submission-ready project report"],
+    features: ["3S LiPo, 15A continuous rated", "IR2101 gate drive + IRFZ44N MOSFETs", "BEMF-based sensorless commutation", "Overcurrent & undervoltage protection"]
+  },
+  {
+    code: "ARC-002", title: "ESP32 Smart Home Automation Hub", category: "iot",
+    categoryLabel: "IoT", volt: "3.3V", tier: "v-33",
+    price: 2499,
+    desc: "App and voice-controlled home automation hub for lights, fans, and appliances, with manual override switches and usage logging.",
+    includes: ["Circuit diagram & PCB layout", "ESP32 firmware (Arduino framework)", "Mobile app / dashboard setup guide", "Project report with block diagram"],
+    features: ["Wi-Fi control via app + Google Assistant", "Physical switch override", "4-channel relay with isolation", "Power-on state memory"]
+  },
+  {
+    code: "ARC-003", title: "Solar MPPT Charge Controller", category: "power",
+    categoryLabel: "Power Electronics", volt: "5V", tier: "v-5",
+    price: 3499,
+    desc: "A Perturb & Observe MPPT charge controller that tracks a solar panel's peak power point to charge a battery efficiently.",
+    includes: ["Schematic & PCB source files", "MCU firmware (P&O algorithm)", "Component sourcing list", "Documentation with efficiency graphs"],
+    features: ["Perturb & Observe MPPT algorithm", "Buck converter, up to 10W panels", "Battery voltage & current display", "Overcharge cutoff protection"]
+  },
+  {
+    code: "ARC-004", title: "Gesture-Controlled Robotic Arm", category: "robotics",
+    categoryLabel: "Robotics", volt: "5V", tier: "v-5",
+    price: 3999,
+    desc: "A 4-DOF robotic arm controlled by hand gestures using an MPU6050 IMU worn on the operator's hand, mapped to servo motion in real time.",
+    includes: ["Mechanical + circuit design files", "Arduino firmware, gesture mapping", "3D-printable arm STL files", "Report with calibration notes"],
+    features: ["MPU6050-based gesture glove", "4-DOF servo-driven arm", "Tuned PID for smooth motion", "Wireless (nRF24L01) option included"]
+  },
+  {
+    code: "ARC-005", title: "Vehicle Accident Detection & GPS Alert", category: "embedded",
+    categoryLabel: "Embedded Systems", volt: "5V", tier: "v-5",
+    price: 2999,
+    desc: "Detects sudden impact or rollover using an accelerometer and automatically sends the vehicle's GPS location to an emergency contact via GSM.",
+    includes: ["Schematic & PCB files", "Firmware with impact-detection logic", "BOM (GSM + GPS modules)", "Report covering test scenarios"],
+    features: ["MEMS accelerometer impact detection", "Auto SMS with live GPS coordinates", "Manual panic-button override", "Low-power standby mode"]
+  },
+  {
+    code: "ARC-006", title: "Smart Agriculture Monitoring System", category: "iot",
+    categoryLabel: "IoT", volt: "3.3V", tier: "v-33",
+    price: 2799,
+    desc: "Monitors soil moisture, temperature, and humidity, and pushes live readings plus automated irrigation alerts to a cloud dashboard.",
+    includes: ["Sensor node schematic & PCB", "ESP32 firmware + cloud dashboard setup", "Sensor calibration guide", "Project documentation"],
+    features: ["Soil moisture, temp & humidity sensing", "Cloud dashboard (ThingSpeak/Blynk)", "Auto irrigation relay trigger", "Solar-chargeable power option"]
+  },
+  {
+    code: "ARC-007", title: "STM32 Digital Multimeter", category: "embedded",
+    categoryLabel: "Embedded Systems", volt: "12V", tier: "v-12",
+    price: 3299,
+    desc: "A handheld digital multimeter built on STM32, measuring voltage, current, resistance, and continuity with an OLED readout.",
+    includes: ["Full schematic & PCB design", "STM32 firmware source", "Calibration procedure & BOM", "Report with accuracy benchmarks"],
+    features: ["Voltage, current, resistance & continuity", "OLED display with auto-ranging", "Rechargeable Li-ion power", "±1% measurement accuracy"]
+  },
+  {
+    code: "ARC-008", title: "RFID-Based Smart Attendance System", category: "embedded",
+    categoryLabel: "Embedded Systems", volt: "3.3V", tier: "v-33",
+    price: 1999,
+    desc: "Tap-based attendance logging using RFID cards, with real-time record-keeping and exportable logs for a classroom or office.",
+    includes: ["Circuit diagram & PCB files", "Firmware source code", "Excel/Sheets export script", "Project report"],
+    features: ["RFID tap-in / tap-out logging", "Real-time clock timestamping", "SD card or cloud log storage", "Buzzer & LED tap feedback"]
+  },
+  {
+    code: "ARC-009", title: "Wireless Power Transfer Circuit", category: "power",
+    categoryLabel: "Power Electronics", volt: "5V", tier: "v-5",
+    price: 2699,
+    desc: "An inductive coupling wireless power transfer demo — charges a small load across an air gap using a resonant coil pair.",
+    includes: ["Transmitter & receiver PCB files", "Driver circuit firmware", "Coil winding specification sheet", "Report with efficiency vs. distance data"],
+    features: ["Resonant inductive coupling", "Up to 5W transfer, tunable gap", "Efficiency measurement built in", "Over-temperature protection"]
+  },
+  {
+    code: "ARC-010", title: "STM32 Mini Drone Flight Controller", category: "robotics",
+    categoryLabel: "Robotics", volt: "12V", tier: "v-12",
+    price: 4499,
+    desc: "A toothpick-class quadcopter flight controller on STM32F4, with IMU-based stabilization and OSD telemetry overlay.",
+    includes: ["4-layer PCB design files", "Flight firmware (STM32F4)", "Full BOM & assembly notes", "Report covering PID tuning process"],
+    features: ["ICM42688 IMU stabilization", "4x motor complementary PWM output", "AT7456E OSD telemetry overlay", "Tuned rate-mode PID loop"]
+  }
+];
+
+const grid = document.getElementById('grid');
+const inr = n => "₹" + n.toLocaleString('en-IN');
+
+function renderCards(list){
+  grid.innerHTML = "";
+  list.forEach((p, i) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.tabIndex = 0;
+    card.setAttribute('data-category', p.category);
+    card.innerHTML = `
+      <div class="card-top">
+        <span class="card-code">${p.code}</span>
+        <span class="badge-volt ${p.tier}">${p.volt}</span>
+      </div>
+      <span class="tag">${p.categoryLabel}</span>
+      <h3>${p.title}</h3>
+      <p class="desc">${p.desc}</p>
+      <div class="card-bottom">
+        <div class="price">${inr(p.price)} <span>onwards</span></div>
+        <span class="view-link">View details →</span>
+      </div>
+    `;
+    card.addEventListener('click', () => openModal(p));
+    card.addEventListener('keypress', e => { if(e.key === 'Enter') openModal(p); });
+    grid.appendChild(card);
+  });
 }
+renderCards(projects);
 
-/* floating hearts for first 4 pages */
-setInterval(()=>{
-  if(current===4) return;
-
-  const h=document.createElement("div");
-  h.className="heart";
-  h.innerHTML="❤";
-  h.style.left=Math.random()*100+"%";
-  pages[current].appendChild(h);
-
-  setTimeout(()=>h.remove(),6000);
-},900);
-
-/* swipe support */
-let startX=0;
-document.addEventListener("touchstart",e=>startX=e.touches[0].clientX);
-document.addEventListener("touchend",e=>{
-  if(e.changedTouches[0].clientX<startX-40) next();
+document.getElementById('filters').addEventListener('click', e => {
+  const btn = e.target.closest('.filter-chip');
+  if(!btn) return;
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  const f = btn.dataset.filter;
+  renderCards(f === 'all' ? projects : projects.filter(p => p.category === f));
 });
 
-/* celebration */
-const last=document.getElementById("lastPage");
-let blown=false;
-
-last.addEventListener("click",celebrate);
-last.addEventListener("touchstart",celebrate);
-
-function celebrate(){
-  if(blown) return;
-  blown=true;
-
-  if(navigator.vibrate) navigator.vibrate(200);
-
-  document.getElementById("flame").classList.add("fadeFlame");
-  document.getElementById("cake").classList.add("cakePop");
-
-  const wish=document.getElementById("wish");
-  wish.innerHTML="Happy Birthday CHIMNEY !! ❤️🎉";
-  wish.classList.add("wishShow");
-
-  /* confetti */
-  for(let i=0;i<80;i++){
-    const c=document.createElement("div");
-    c.className="confetti";
-    c.style.left=Math.random()*100+"%";
-    c.style.background=`hsl(${Math.random()*360},80%,60%)`;
-    last.appendChild(c);
-    setTimeout(()=>c.remove(),3000);
-  }
-
-  /* poppers */
-  for(let i=0;i<12;i++){
-    const p=document.createElement("div");
-    p.className="popper";
-    p.innerHTML="🎉";
-    p.style.left=(i%2?90:5)+"%";
-    last.appendChild(p);
-    setTimeout(()=>p.remove(),800);
-  }
+const overlay = document.getElementById('modalOverlay');
+function openModal(p){
+  document.getElementById('mCode').textContent = p.code;
+  document.getElementById('mTitle').textContent = p.title;
+  document.getElementById('mTag').textContent = p.categoryLabel + " · " + p.volt + " tier";
+  document.getElementById('mDesc').textContent = p.desc;
+  document.getElementById('mIncludes').innerHTML = p.includes.map(i => `<li>${i}</li>`).join('');
+  document.getElementById('mFeatures').innerHTML = p.features.map(i => `<li>${i}</li>`).join('');
+  document.getElementById('mPrice').textContent = inr(p.price) + " onwards";
+  const msg = encodeURIComponent(`Hi Arc Electricals, I'm interested in ${p.code} - ${p.title}. Could you share more details?`);
+  document.getElementById('mOrder').href = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
+function closeModal(){
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.getElementById('modalClose').addEventListener('click', closeModal);
+overlay.addEventListener('click', e => { if(e.target === overlay) closeModal(); });
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModal(); });
+
+const menuBtn = document.getElementById('menuBtn');
+const navLinks = document.getElementById('navLinks');
+menuBtn.addEventListener('click', () => navLinks.classList.toggle('open'));
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
 </script>
 
 </body>
